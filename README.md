@@ -54,7 +54,7 @@ import "list"
 
 #schemas: {
 	some_resource: {
-	  created_at?:      string @computed()
+		created_at?:      string @computed()
 		encrypted_value?: string @sensitive()
 		topics!:          [...string] & list.UniqueItems()
 	}
