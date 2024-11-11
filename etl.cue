@@ -2,20 +2,21 @@ package main
 
 import "list"
 
-#etlProviderSchema: {
+_#etlProviderSchema: {
   _in: _
   _out: {
     resource: {
       for rn, rs in _in.resource_schemas {
         (rn): {
           for an, as in rs.block.attributes {
-            (an): (#etlAttrType & {_in: as.type})._out
+            (an): (_#etlAttrType & {_in: as.type})._out
           }
 
           for btn, bts in rs.block.block_types {
             (btn): {
+              // maybe recurse here since embedded blocks have schemas
               for an, as in rs.block.attributes {
-                (an): (#etlAttrType & {_in: as.type})._out
+                (an): (_#etlAttrType & {_in: as.type})._out
               }
             }
           }
@@ -25,7 +26,7 @@ import "list"
   }
 }
 
-#etlAttrType: {
+_#etlAttrType: {
   _in:  _
   _out: _
 
@@ -35,13 +36,13 @@ import "list"
 
   if (_in & ["list", _]) != _|_ {
     let v = _in[1]
-    let t = (#etlAttrType & {_in: v})._out
+    let t = (_#etlAttrType & {_in: v})._out
     _out: [...t]
   }
 
   if (_in & ["set", _]) != _|_ {
     let v = _in[1]
-    let t = (#etlAttrType & {_in: v})._out
+    let t = (_#etlAttrType & {_in: v})._out
     _out: [...t] & list.UniqueItems()
   }
 }

@@ -60,3 +60,12 @@ import "list"
 	}
 }
 ```
+
+
+## response
+
+* `def` is not well defined and buggy: `$ cue def ... | cue eval -` fails
+
+* what does "etl" stands for ?
+
+* name conflicts between attributes and nested blocks
